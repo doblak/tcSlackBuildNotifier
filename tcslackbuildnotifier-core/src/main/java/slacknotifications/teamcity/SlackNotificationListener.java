@@ -101,6 +101,10 @@ public class SlackNotificationListener extends BuildServerAdapter {
 	private void processBuildEvent(SRunningBuild sRunningBuild, BuildStateEnum state) {
 
 			Loggers.SERVER.debug("About to process Slack notifications for " + sRunningBuild.getProjectId() + " at buildState " + state.getShortName());
+			if(sRunningBuild.isPersonal()) {
+				Loggers.SERVER.debug("Personal build, skipping processing Slack notifications for " + sRunningBuild.getProjectId() + " at buildState " + state.getShortName());
+				return;
+			}
 			for (SlackNotificationConfigWrapper slackNotificationConfigWrapper : getListOfEnabledSlackNotifications(sRunningBuild.getProjectId())){
 
                 if (state.equals(BuildStateEnum.BUILD_STARTED)){
